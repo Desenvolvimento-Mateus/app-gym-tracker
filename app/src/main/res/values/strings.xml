@@ -1,0 +1,28 @@
+<resources>
+    <string name="app_name">Gym Tracker</string>
+    <string name="home_title">Treino de hoje</string>
+    <string name="home_list_item_sets">%1$d séries</string>
+    <string name="exercise_icon">Ícone do exercício</string>
+    <string name="exercise_image">Imagem do exercício</string>
+    <string name="back_button">Voltar</string>
+    <string name="execution_card_title">Execução</string>
+    <string name="sets_progress_card_title">Progresso das séries</string>
+    <string name="sets_progress">%1$d de %2$d séries</string>
+    <string name="percent">%1$d%%</string>
+    <string name="undo_set_button">Desfazer série</string>
+    <string name="complete_set_button">Concluir série</string>
+    <string name="details">Detalhes</string>
+    <string name="muscle_group">Grupo muscular</string>
+    <string name="equipment">Equipamento</string>
+    <string name="reps">Repetições</string>
+    <string name="weight">Carga</string>
+    <string name="rest">Descanso</string>
+    <string name="notes">Observações</string>
+    <string name="sets_x_reps">%1$dx%2$d</string>
+    <string name="weight_kg">%1$.1f kg</string>
+    <string name="rest_seconds">%1$d s</string>
+    <string name="bodyweight">Peso corporal</string>
+    <string name="no_notes">Sem observações</string>
+    <string name="exercise_not_found">Exercício não encontrado</string>
+    <string name="exercise_completed">Exercício concluído! 💪</string>
+</resources>
