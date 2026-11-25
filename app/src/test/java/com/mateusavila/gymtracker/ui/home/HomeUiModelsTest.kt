@@ -1,8 +1,14 @@
 package com.mateusavila.gymtracker.ui.home
 
 import com.mateusavila.gymtracker.domain.model.Exercise
+import com.mateusavila.gymtracker.domain.model.ExerciseProgress
+import com.mateusavila.gymtracker.domain.model.SetsProgress
+import com.mateusavila.gymtracker.domain.model.Workout
+import com.mateusavila.gymtracker.domain.model.startProgress
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class HomeUiModelsTest {
@@ -26,8 +32,10 @@ class HomeUiModelsTest {
     )
 
     @Test
-    fun toListItem_mapsOnlyTheFieldsShownInTheList() {
-        val item = createExercise().toListItem(order = 2)
+    fun toListItem_usesTheProgressSetsAndWeight() {
+        val progress = ExerciseProgress(SetsProgress(totalSets = 4, completedSets = 2), weightInGrams = 42_500)
+
+        val item = createExercise().toListItem(order = 2, progress = progress)
 
         assertEquals(
             ExerciseListItem(
@@ -37,7 +45,10 @@ class HomeUiModelsTest {
                 muscleGroup = "Peito",
                 totalSets = 4,
                 reps = 10,
-                weightInGrams = 40_000
+                weightInGrams = 42_500,
+                completedSets = 2,
+                progressPercentage = 50,
+                isFinished = false
             ),
             item
         )
@@ -45,17 +56,43 @@ class HomeUiModelsTest {
 
     @Test
     fun toListItem_keepsBodyweightAsNull() {
-        assertNull(createExercise(weightInGrams = null).toListItem(order = 1).weightInGrams)
+        val exercise = createExercise(weightInGrams = null)
+
+        assertNull(exercise.toListItem(order = 1, progress = exercise.startProgress()).weightInGrams)
     }
 
     @Test
     fun toWorkoutSummary_countsExercisesSetsAndDistinctMuscleGroups() {
-        val summary = listOf(
+        val exercises = listOf(
             createExercise(id = "a", muscleGroup = "Peito", totalSets = 4),
             createExercise(id = "b", muscleGroup = "Pernas", totalSets = 3),
             createExercise(id = "c", muscleGroup = "Peito", totalSets = 3)
-        ).toWorkoutSummary()
+        )
+        val progress = mapOf("a" to ExerciseProgress(SetsProgress(totalSets = 4, completedSets = 4), 40_000))
 
-        assertEquals(WorkoutSummary(exerciseCount = 3, totalSets = 10, muscleGroupCount = 2), summary)
+        val summary = exercises.toWorkoutSummary(progress)
+
+        assertEquals(
+            WorkoutSummary(
+                exerciseCount = 3,
+                totalSets = 10,
+                completedSets = 4,
+                muscleGroupCount = 2,
+                progressPercentage = 40
+            ),
+            summary
+        )
+    }
+
+    @Test
+    fun toHomeSuccessState_allowsFinishingOnlyWithACompletedSet() {
+        val exercise = createExercise(id = "a")
+        val workout = Workout(name = "Treino A", exercises = listOf(exercise))
+        val noSetsDone = mapOf("a" to exercise.startProgress())
+        val oneSetDone = mapOf("a" to exercise.startProgress().let { it.copy(sets = it.sets.completeSet()) })
+
+        assertFalse(workout.toHomeSuccessState(noSetsDone, isFinishing = false).canFinishWorkout)
+        assertTrue(workout.toHomeSuccessState(oneSetDone, isFinishing = false).canFinishWorkout)
+        assertFalse(workout.toHomeSuccessState(oneSetDone, isFinishing = true).canFinishWorkout)
     }
 }

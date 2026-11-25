@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.mateusavila.gymtracker.R
 import com.mateusavila.gymtracker.data.ExerciseMockDataSource
 import com.mateusavila.gymtracker.databinding.ActivityHomeBinding
+import com.mateusavila.gymtracker.domain.model.startProgress
 import com.mateusavila.gymtracker.ui.applySystemBarsPadding
 import com.mateusavila.gymtracker.ui.bind
 import com.mateusavila.gymtracker.ui.detail.ExerciseDetailActivity
@@ -24,11 +25,11 @@ class HomeActivity : AppCompatActivity() {
 
         val exercises = ExerciseMockDataSource.getExercises()
 
-        showSummary(exercises.toWorkoutSummary())
+        showSummary(exercises.toWorkoutSummary(emptyMap()))
 
         binding.exerciseList.layoutManager = LinearLayoutManager(this)
         binding.exerciseList.adapter = ExerciseListAdapter(
-            items = exercises.mapIndexed { index, exercise -> exercise.toListItem(order = index + 1) },
+            items = exercises.mapIndexed { index, exercise -> exercise.toListItem(order = index + 1, progress = exercise.startProgress()) },
             onItemClick = ::openExerciseDetail
         )
     }

@@ -11,6 +11,19 @@
     <string name="order_number">%1$02d</string>
     <string name="sets_x_reps">%1$d × %2$d</string>
     <string name="exercise_summary">%1$s · %2$s</string>
+    <string name="sets_done_of_total">%1$d/%2$d</string>
+    <string name="progress_percent">%1$d%%</string>
+    <string name="workout_progress_title">Progresso do treino</string>
+    <string name="history_button">Histórico</string>
+    <string name="loading_workout">Carregando treino</string>
+    <string name="error_reading_workout">Não foi possível ler o treino de hoje.</string>
+    <string name="error_invalid_workout">O arquivo do treino está com dados inválidos.</string>
+    <string name="empty_workout_title">Nenhum exercício hoje</string>
+    <string name="empty_workout_message">O treino de hoje não tem exercícios cadastrados.</string>
+    <string name="finish_workout_button">Finalizar treino</string>
+    <string name="saving_workout">Salvando treino</string>
+    <string name="finish_workout_hint">Conclua ao menos uma série para finalizar</string>
+    <string name="finish_workout_error">Não foi possível salvar o treino. Tente novamente.</string>
 
     <!-- Weight -->
     <string name="weight_in_kg">%1$s kg</string>
