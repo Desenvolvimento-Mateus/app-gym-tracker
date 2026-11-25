@@ -19,6 +19,12 @@ class WeightFormatterTest {
     }
 
     @Test
+    fun formatWeightInKg_groupsThousandsWithADot() {
+        assertEquals("4.520", formatWeightInKg(4_520_000))
+        assertEquals("1.250,5", formatWeightInKg(1_250_500))
+    }
+
+    @Test
     fun formatWeightInKg_handlesWeightsBelowOneKilogram() {
         assertEquals("0,5", formatWeightInKg(500))
     }

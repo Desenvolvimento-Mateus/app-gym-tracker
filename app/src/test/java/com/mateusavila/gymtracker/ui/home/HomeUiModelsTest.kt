@@ -1,10 +1,10 @@
 package com.mateusavila.gymtracker.ui.home
 
-import com.mateusavila.gymtracker.domain.model.Exercise
 import com.mateusavila.gymtracker.domain.model.ExerciseProgress
 import com.mateusavila.gymtracker.domain.model.SetsProgress
 import com.mateusavila.gymtracker.domain.model.Workout
 import com.mateusavila.gymtracker.domain.model.startProgress
+import com.mateusavila.gymtracker.testutil.createExercise
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
@@ -12,24 +12,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class HomeUiModelsTest {
-
-    private fun createExercise(
-        id: String = "ex-test",
-        muscleGroup: String = "Peito",
-        totalSets: Int = 4,
-        weightInGrams: Int? = 40_000
-    ) = Exercise(
-        id = id,
-        name = "Supino reto",
-        muscleGroup = muscleGroup,
-        equipment = "Barra",
-        description = "Descrição de teste",
-        totalSets = totalSets,
-        reps = 10,
-        restSeconds = 90,
-        weightInGrams = weightInGrams,
-        notes = null
-    )
 
     @Test
     fun toListItem_usesTheProgressSetsAndWeight() {
@@ -39,7 +21,7 @@ class HomeUiModelsTest {
 
         assertEquals(
             ExerciseListItem(
-                id = "ex-test",
+                id = "ex1",
                 order = 2,
                 name = "Supino reto",
                 muscleGroup = "Peito",
