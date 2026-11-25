@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Same value as Background in ui/theme/Color.kt, used by the window theme. -->
     <color name="background">#FF101113</color>
-    <color name="surface">#FF1B1C1F</color>
-    <color name="surface_variant">#FF26282C</color>
-    <color name="outline">#FF3A3D42</color>
-    <color name="accent">#FFC6F432</color>
-    <color name="accent_container">#FF2A3310</color>
-    <color name="on_accent">#FF101113</color>
-    <color name="text_primary">#FFF2F2F2</color>
-    <color name="text_secondary">#FFA0A3A8</color>
 </resources>

@@ -50,7 +50,6 @@
     <!-- Sets progress -->
     <string name="sets_title">Registro de séries</string>
     <string name="sets_counter">Concluídas: %1$d de %2$d</string>
-    <string name="sets_progress_percent">%1$d%%</string>
     <string name="set_description">Série %1$d</string>
     <string name="undo_set_button">Desfazer</string>
     <string name="complete_set_button">Concluir série %1$d</string>
