@@ -41,6 +41,11 @@
     <string name="execution_title">Como executar</string>
     <string name="notes_title">Dica</string>
     <string name="exercise_not_found">Exercício não encontrado</string>
+    <string name="loading_exercise">Carregando exercício</string>
+    <string name="adjust_weight_title">Ajustar carga</string>
+    <string name="weight_step_hint">Passos de %1$s kg</string>
+    <string name="decrease_weight">Diminuir carga</string>
+    <string name="increase_weight">Aumentar carga</string>
 
     <!-- Sets progress -->
     <string name="sets_title">Registro de séries</string>
