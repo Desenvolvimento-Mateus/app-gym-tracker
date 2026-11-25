@@ -17,3 +17,7 @@ local.properties
 .vs/
 .idea/
 .kotlin/
+
+# Secrets (the app has none, ignored just in case)
+secrets.properties
+*.env
