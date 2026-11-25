@@ -56,4 +56,17 @@
     <string name="complete_set_button">Concluir série %1$d</string>
     <string name="all_sets_completed">Tudo concluído</string>
     <string name="exercise_completed">Exercício concluído! 💪</string>
+
+    <!-- History -->
+    <string name="history_title">Histórico</string>
+    <string name="history_subtitle">Treinos finalizados</string>
+    <string name="history_workouts">Treinos</string>
+    <string name="history_completed_sets">Séries concluídas</string>
+    <string name="history_sets_done">%1$d de %2$d séries</string>
+    <string name="history_total_load">Carga total: %1$s</string>
+    <string name="loading_history">Carregando histórico</string>
+    <string name="error_reading_history">Não foi possível ler o histórico.</string>
+    <string name="error_invalid_history">O arquivo do histórico está com dados inválidos.</string>
+    <string name="empty_history_title">Nenhum treino finalizado</string>
+    <string name="empty_history_message">Conclua séries e toque em “Finalizar treino” para ver seus treinos aqui.</string>
 </resources>
