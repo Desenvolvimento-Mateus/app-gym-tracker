@@ -61,7 +61,11 @@
     <string name="history_subtitle">Treinos finalizados</string>
     <string name="history_workouts">Treinos</string>
     <string name="history_completed_sets">Séries concluídas</string>
-    <string name="history_sets_done">%1$d de %2$d séries</string>
+    <plurals name="history_sets_done">
+        <item quantity="one">%1$d de %2$d série</item>
+        <item quantity="many">%1$d de %2$d séries</item>
+        <item quantity="other">%1$d de %2$d séries</item>
+    </plurals>
     <string name="history_total_load">Carga total: %1$s</string>
     <string name="loading_history">Carregando histórico</string>
     <string name="error_reading_history">Não foi possível ler o histórico.</string>

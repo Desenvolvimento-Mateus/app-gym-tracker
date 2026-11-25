@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -162,7 +163,13 @@ private fun SessionRow(session: WorkoutSessionItem) {
             )
             Spacer(Modifier.height(2.dp))
             Text(
-                text = stringResource(R.string.history_sets_done, session.completedSets, session.totalSets),
+                // Plural: "1 de 1 série" / "2 de 28 séries", chosen by the total.
+                text = pluralStringResource(
+                    R.plurals.history_sets_done,
+                    session.totalSets,
+                    session.completedSets,
+                    session.totalSets
+                ),
                 style = MaterialTheme.typography.labelMedium,
                 color = colors.onSurfaceVariant
             )

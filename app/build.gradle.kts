@@ -16,8 +16,6 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -36,6 +34,14 @@ android {
         viewBinding = false
         compose = true
     }
+
+    lint {
+        // The project uses fixed versions on purpose: AGP 9.3.1, Kotlin 2.2.10 and compileSdk 37.0.
+        // kotlinx-serialization 1.9.0 and coroutines-test 1.10.2 are the newest ones for Kotlin 2.2,
+        // and newer Compose BOMs need compileSdk 37.1. These checks only say that newer versions
+        // exist, so they are turned off; every other lint check stays on.
+        disable += setOf("AndroidGradlePluginVersion", "GradleDependency", "NewerVersionAvailable")
+    }
 }
 
 dependencies {
@@ -53,9 +59,5 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
     testImplementation(libs.junit)
     testImplementation(libs.kotlinx.coroutines.test)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    androidTestImplementation(libs.androidx.junit)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
     debugImplementation(libs.androidx.compose.ui.tooling)
 }
