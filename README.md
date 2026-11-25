@@ -1,6 +1,6 @@
 # Gym Tracker
 
-App Android para acompanhar o treino de academia do dia. A tela inicial lista os exercícios do treino; ao tocar em um exercício, abre-se o detalhe com a forma de execução, as informações de séries, repetições, carga e descanso, e os botões para marcar (▶) ou desfazer (◀) as séries concluídas, com barra de progresso.
+App Android para acompanhar o treino de academia do dia. A tela inicial mostra um resumo do treino (exercícios, séries e grupos musculares) e a sequência de exercícios; ao tocar em um exercício, abre-se o detalhe com séries, repetições, carga, descanso, a forma de execução e uma dica opcional. No detalhe, o usuário registra as séries concluídas tocando nos números das séries ou nos botões **Concluir série** / **Desfazer**.
 
 Projeto individual da **Avaliação Parcial** da disciplina de Programação Mobile — Android Views (XML) e navegação com Intent. Os dados são simulados (mock), sem API ou banco de dados.
 
@@ -24,37 +24,61 @@ Pela linha de comando (Windows/PowerShell):
 .\gradlew.bat test            # roda os testes de unidade
 ```
 
+## Estrutura do código
+
+```
+com.mateusavila.gymtracker
+├── domain/model/        → modelos de domínio (regras de negócio, sem nada de Android)
+│   ├── Exercise.kt         exercício do treino (peso em gramas: weightInGrams: Int?)
+│   └── SetsProgress.kt     progresso das séries (concluir, desfazer, alternar, %)
+├── data/
+│   └── ExerciseMockDataSource.kt   dados simulados + busca por id
+└── ui/                  → camada de apresentação
+    ├── WeightFormatter.kt  gramas → "12,5 kg" só com aritmética inteira
+    ├── StatTile.kt         preenche o componente reutilizável view_stat_tile.xml
+    ├── home/               HomeActivity, ExerciseListAdapter e modelos de UI
+    │                       (ExerciseListItem, WorkoutSummary + mappers do domínio)
+    └── detail/             ExerciseDetailActivity e SetsProgressFragment
+```
+
+- Os modelos de domínio não conhecem a UI; a tela inicial usa seus próprios modelos (`ExerciseListItem`, `WorkoutSummary`) criados por funções de mapeamento (`toListItem`, `toWorkoutSummary`).
+- Entre as telas trafega **somente o id do exercício** (`ExerciseDetailActivity.createIntent(context, exerciseId)`); o detalhe e o Fragment buscam o restante no `ExerciseMockDataSource`.
+- A carga é guardada como `Int` em gramas (`weightInGrams`), evitando `Double`/`Float`; a conversão para kg acontece só na apresentação.
+
 ## Bibliotecas utilizadas
 
 | Biblioteca | Para que serve no projeto |
 |---|---|
-| AndroidX Core KTX | Extensões Kotlin do Android e `ViewCompat`/`WindowInsetsCompat` para tratar as barras do sistema |
-| AndroidX AppCompat | `AppCompatActivity` e suporte à `Toolbar` como action bar |
+| AndroidX Core KTX | `ViewCompat`/`WindowInsetsCompat` (barras do sistema), `bundleOf` e `isVisible` |
+| AndroidX AppCompat | `AppCompatActivity`, `Toolbar` como action bar e `drawableTint` em `TextView` |
 | AndroidX Activity KTX | `enableEdgeToEdge()` e o `onBackPressedDispatcher` usado no botão voltar |
 | AndroidX Lifecycle Runtime KTX | Ciclo de vida das Activities (dependência padrão do template) |
-| Material Components | Tema Material 3 escuro, `MaterialToolbar`, `LinearProgressIndicator`, `FloatingActionButton` e `MaterialDivider` |
-| AndroidX ConstraintLayout | Declarada no template; as telas usam `LinearLayout`/`FrameLayout` |
+| Material Components | Tema Material 3 escuro, `MaterialToolbar` e `MaterialButton` |
 | AndroidX RecyclerView | Lista de exercícios (vem como dependência transitiva do Material/AppCompat) |
 | AndroidX Fragment | `SetsProgressFragment` e `FragmentContainerView` (vem como dependência transitiva do AppCompat) |
 | Jetpack Compose (BOM, UI, Material3, Activity Compose) | Já declarado para a Etapa 2; não é usado nas telas desta etapa |
-| JUnit 4 | Testes de unidade da regra de negócio (`ExerciseDetailTest`) |
+| JUnit 4 | Testes de unidade |
 
 ## Requisitos da avaliação → onde está no código
 
 | Requisito | Onde |
 |---|---|
-| Duas telas em Views/XML com Views e ViewGroups adequados | `res/layout/activity_home.xml` (LinearLayout + RecyclerView) e `res/layout/exercise_detail_layout.xml` (ScrollView, LinearLayout, FrameLayout, ImageView, TextView, FragmentContainerView) + `fragment_sets_progress.xml` (LinearProgressIndicator, FloatingActionButton) |
-| Navegação por Intent explícita com passagem de dados | `HomeActivity.kt` → `ExerciseListAdapter.onBindViewHolder` (`putExtra(EXERCISE_ID_KEY, item.id)`); `ExerciseDetailActivity.kt` lê o id e busca em `mockExercises` |
-| Views conectadas por ViewBinding + interação que atualiza a interface | `SetsProgressFragment.kt`: FABs ◀/▶ chamam `undoSet()`/`completeSet()` e `updateSetsProgressViews()`; clique no item da lista abre o detalhe |
-| Modelos imutáveis (`data class`) | `ExerciseDetail` (fim de `ExerciseDetailActivity.kt`) e `ExerciseListItem` (fim de `HomeActivity.kt`); alterações via `copy()` |
-| Valores opcionais tratados | `weightKg: Double?` → "Peso corporal" e badge omitido; `notes: String?` → "Sem observações"; id inexistente → Toast + `finish()` |
-| Dados simulados (mock) | `mockExercises` no topo de `ExerciseDetailActivity.kt` |
+| Duas telas em Views/XML com Views e ViewGroups adequados | `activity_home.xml` (LinearLayout, TextView, RecyclerView) e `activity_exercise_detail.xml` (MaterialToolbar, ScrollView, LinearLayout, FragmentContainerView); itens em `item_exercise.xml` (TextView, ImageView, `<include>`) |
+| Navegação por Intent explícita com passagem de dados | `HomeActivity.openExerciseDetail` → `ExerciseDetailActivity.createIntent(context, exerciseId)` (passa apenas o id) |
+| Views conectadas por ViewBinding + interação que atualiza a interface | Clique no item da lista abre o detalhe; em `SetsProgressFragment`, tocar numa série ou em Concluir/Desfazer atualiza contador, %, séries marcadas e botões |
+| Modelos imutáveis (`data class`) | `Exercise`, `SetsProgress`, `ExerciseListItem`, `WorkoutSummary`; alterações via `copy()` |
+| Valores opcionais tratados | `weightInGrams: Int?` → "Peso corporal"/"Corporal"; `notes: String?` → card de dica escondido; id inexistente → Toast + `finish()` |
+| Dados simulados (mock) | `data/ExerciseMockDataSource.kt` |
 | Opcional: apenas ViewBinding | Nenhum `findViewById` no projeto |
-| Opcional: componentes XML reutilizáveis inflados + eventos que atualizam a UI | `badge_layout.xml` (usado com `<include>` no item da lista e inflado com `BadgeLayoutBinding.inflate` no header do detalhe); `detail_row_layout.xml` (reutilizado 6 vezes no card Detalhes, preenchido por `setDetailRow`); `fragment_sets_progress.xml` (inflado pelo Fragment, com os eventos ◀/▶ que atualizam texto, percentual, barra e botões) |
-| Opcional: interface funcional em `Fragment` com ciclo de vida e ViewBinding | `SetsProgressFragment.kt`: `newInstance` com argumentos, binding criado em `onCreateView` e liberado em `onDestroyView`, listeners em `onViewCreated` e séries concluídas salvas em `onSaveInstanceState` (sobrevivem à rotação) |
-| Testes da regra de negócio | `app/src/test/java/com/mateusavila/gymtracker/ExerciseDetailTest.kt` |
+| Opcional: componentes XML reutilizáveis inflados + eventos que atualizam a UI | `view_stat_tile.xml` (3× na home, 4× no detalhe, via `<include>`), `view_chip.xml` (no item da lista), `item_set.xml` (inflado com `ItemSetBinding.inflate` uma vez por série, com clique que atualiza a UI) |
+| Opcional: interface funcional em `Fragment` com ciclo de vida e ViewBinding | `SetsProgressFragment`: `newInstance` com argumentos, estado criado em `onCreate`, binding em `onCreateView` e liberado em `onDestroyView`, séries concluídas salvas em `onSaveInstanceState` (sobrevivem à rotação) |
+| Testes | `app/src/test/...`: `SetsProgressTest`, `WeightFormatterTest`, `HomeUiModelsTest`, `ExerciseMockDataSourceTest` |
+
+## Convenções
+
+- Código (classes, variáveis, funções, comentários) em inglês e em camelCase; textos exibidos ao usuário em português, em `strings.xml`.
+- Recursos em snake_case com prefixo por tipo: `activity_`, `fragment_`, `item_`, `view_` (layouts), `bg_`, `ic_` (drawables); ids de views também em snake_case.
 
 ## Limitações conhecidas
 
 - As séries marcadas sobrevivem à rotação da tela, mas não são persistidas: ao voltar para a lista e abrir o exercício de novo, o progresso recomeça. Persistência e `ViewModel` entram na Etapa 2.
-- As imagens são um ícone vetorial genérico de haltere.

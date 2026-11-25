@@ -11,10 +11,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GymTracker">
         <activity
-            android:name=".ExerciseDetailActivity"
+            android:name=".ui.detail.ExerciseDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".HomeActivity"
+            android:name=".ui.home.HomeActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
