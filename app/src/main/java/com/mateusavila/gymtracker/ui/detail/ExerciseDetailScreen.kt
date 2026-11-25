@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -302,26 +303,31 @@ private fun SetsCard(
         }
 
         Spacer(Modifier.height(16.dp))
+        // Smaller side padding than the default so "Desfazer" fits in one line.
+        val buttonPadding = PaddingValues(horizontal = 12.dp, vertical = 8.dp)
         Row {
             OutlinedButton(
                 onClick = actions.onUndoSet,
                 enabled = exercise.completedSets > 0,
+                contentPadding = buttonPadding,
                 modifier = Modifier.weight(1f)
             ) {
-                Text(stringResource(R.string.undo_set_button))
+                Text(stringResource(R.string.undo_set_button), maxLines = 1)
             }
             Spacer(Modifier.width(8.dp))
             Button(
                 onClick = actions.onCompleteSet,
                 enabled = !exercise.isFinished,
+                contentPadding = buttonPadding,
                 modifier = Modifier.weight(2f)
             ) {
                 Text(
-                    if (exercise.isFinished) {
+                    text = if (exercise.isFinished) {
                         stringResource(R.string.all_sets_completed)
                     } else {
                         stringResource(R.string.complete_set_button, exercise.completedSets + 1)
-                    }
+                    },
+                    maxLines = 1
                 )
             }
         }

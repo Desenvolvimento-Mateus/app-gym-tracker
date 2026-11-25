@@ -1,28 +1,40 @@
 package com.mateusavila.gymtracker.ui.theme
 
+import androidx.annotation.FontRes
 import androidx.compose.material3.Typography
+import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontVariation
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.mateusavila.gymtracker.R
 
-// Both font files are variable fonts (one file with every weight). Compose sets the
-// font "weight" axis from the FontWeight given here, so the same file is used three times.
+/**
+ * Both font files are variable fonts: one file holds every weight. FontVariation sets the
+ * "wght" axis of the file, so the same file is used for each weight. This API is still
+ * marked as experimental in Compose, hence the opt-in.
+ */
+@OptIn(ExperimentalTextApi::class)
+private fun variableFont(@FontRes resId: Int, weight: FontWeight) = Font(
+    resId = resId,
+    weight = weight,
+    variationSettings = FontVariation.Settings(FontVariation.weight(weight.weight))
+)
 
 /** Syne: titles and body text. */
 val Syne = FontFamily(
-    Font(R.font.syne, FontWeight.Normal),
-    Font(R.font.syne, FontWeight.SemiBold),
-    Font(R.font.syne, FontWeight.Bold)
+    variableFont(R.font.syne, FontWeight.Normal),
+    variableFont(R.font.syne, FontWeight.SemiBold),
+    variableFont(R.font.syne, FontWeight.Bold)
 )
 
 /** JetBrains Mono: numbers (sets, weight, percentages) and small labels. */
 val JetBrainsMono = FontFamily(
-    Font(R.font.jetbrains_mono, FontWeight.Normal),
-    Font(R.font.jetbrains_mono, FontWeight.Bold)
+    variableFont(R.font.jetbrains_mono, FontWeight.Normal),
+    variableFont(R.font.jetbrains_mono, FontWeight.Bold)
 )
 
 /**

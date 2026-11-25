@@ -97,7 +97,7 @@ fun HistoryContent(
 private fun SessionList(state: HistoryUiState.Success) {
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(10.dp),
-        contentPadding = PaddingValues(16.dp)
+        contentPadding = PaddingValues(horizontal = 20.dp, vertical = 16.dp)
     ) {
         item {
             Row(
