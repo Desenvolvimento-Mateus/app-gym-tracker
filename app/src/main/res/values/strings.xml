@@ -19,6 +19,7 @@
 
     <!-- Exercise detail -->
     <string name="back_button">Voltar</string>
+    <string name="retry_button">Tentar novamente</string>
     <string name="muscle_group_and_equipment">%1$s · %2$s</string>
     <string name="stat_reps">Repetições</string>
     <string name="stat_weight">Carga</string>
